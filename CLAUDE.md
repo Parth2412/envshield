@@ -14,7 +14,7 @@
 
 6. **Do NOT add production dependencies without explicit user approval** — the zero-dependency core is a security feature.
 
-7. **Run `npm run test:coverage` before every code review** — fail if coverage drops below thresholds.
+7. **Run `vitest run --coverage` before every commit** — fail if coverage drops below thresholds
 
 ## Before Making Decisions
 
