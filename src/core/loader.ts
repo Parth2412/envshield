@@ -4,11 +4,9 @@ import { join, resolve } from 'node:path';
 const MAX_FILE_SIZE = 1024 * 1024; // 1MB
 
 function isSafeDir(dir: string): boolean {
-  // Reject any path that contains traversal sequences
-  if (dir.includes('..')) {
-    return false;
-  }
-  return true;
+  // Split on both Unix and Windows separators and check for '..' segments
+  const segments = dir.split(/[/\\]/);
+  return !segments.includes('..');
 }
 
 function parseEnvFile(content: string, filePath: string): Record<string, string> {
@@ -59,6 +57,13 @@ function loadSingleFile(filePath: string): Record<string, string> {
 }
 
 export async function loadEnvFiles(dir: string, env: string): Promise<Record<string, string>> {
+  // Validate env value to prevent path traversal via .env.{env} filename
+  if (!/^[a-zA-Z0-9_-]+$/.test(env)) {
+    throw new Error(
+      `Invalid env value: "${env}" — must contain only alphanumeric characters, hyphens, and underscores`,
+    );
+  }
+
   if (!isSafeDir(dir)) {
     throw new Error(`Path traversal detected in directory argument: "${dir}"`);
   }

@@ -27,8 +27,9 @@ export async function validateEnv<S extends SchemaMap>(
         fieldErrors[key] = result.issues.map((issue) =>
           typeof issue.message === 'string' ? issue.message : String(issue.message),
         );
-      } else if (!result.issues) {
-        config[key] = result.value;
+      } else {
+        // issues is either undefined (SuccessResult) or an empty array — both mean success
+        config[key] = (result as StandardSchemaV1.SuccessResult<unknown>).value;
       }
     }),
   );

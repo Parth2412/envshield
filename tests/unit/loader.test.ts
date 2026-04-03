@@ -112,6 +112,14 @@ describe('loadEnvFiles', () => {
       await expect(loadEnvFiles('/tmp/../etc', 'development')).rejects.toThrow(/path traversal/i);
     });
 
+    it('rejects path traversal attempts in env argument', async () => {
+      await expect(loadEnvFiles(testDir, '../../../etc/passwd')).rejects.toThrow(/invalid env/i);
+    });
+
+    it('rejects env with special characters', async () => {
+      await expect(loadEnvFiles(testDir, 'prod; rm -rf /')).rejects.toThrow(/invalid env/i);
+    });
+
     it('limits file size to prevent DoS (files over 1MB rejected)', async () => {
       const bigContent = 'A='.padEnd(1024 * 1024 + 1, 'x');
       writeFileSync(join(testDir, '.env'), bigContent);
