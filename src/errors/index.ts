@@ -21,7 +21,7 @@ export class ProviderError extends Error {
     public readonly providerName: string,
     public readonly cause?: unknown,
   ) {
-    super(message);
+    super(message, { cause });
     this.name = 'ProviderError';
   }
 }
