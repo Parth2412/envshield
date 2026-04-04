@@ -77,6 +77,25 @@ describe('validateEnv', () => {
     });
   });
 
+  describe('secret field error redaction', () => {
+    it('does not include raw secret value in error message when a secret field fails validation', async () => {
+      const RAW_SECRET_VALUE = 'sk_live_SUPER_SECRET_VALUE_12345';
+      const schema = {
+        API_KEY: s.secret(z.string().min(100, `Value ${RAW_SECRET_VALUE} is too short`)),
+      };
+      try {
+        await validateEnv(schema, { API_KEY: RAW_SECRET_VALUE });
+        expect.fail('should have thrown');
+      } catch (err) {
+        expect(err).toBeInstanceOf(EnvValidationError);
+        const e = err as EnvValidationError;
+        // The raw secret value must not appear in the error message
+        expect(e.message).not.toContain(RAW_SECRET_VALUE);
+        expect(JSON.stringify(e.fields)).not.toContain(RAW_SECRET_VALUE);
+      }
+    });
+  });
+
   describe('type inference', () => {
     it('inferred config type matches schema output types', async () => {
       const schema = {
