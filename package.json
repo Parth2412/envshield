@@ -1,6 +1,6 @@
 {
   "name": "@thekaloliya/envshield",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Type-safe configuration & secrets management replacing dotenv. Security-first: redacts secrets from logs, deletes them from process.env after loading.",
   "keywords": ["env", "config", "secrets", "dotenv", "security", "type-safe", "zod"],
   "author": {
