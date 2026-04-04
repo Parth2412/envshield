@@ -1,6 +1,11 @@
 import type { StandardSchemaV1 } from '@standard-schema/spec';
 import { EnvValidationError } from '../errors/index.js';
+import type { SecretSchema } from './schema.js';
 import { Secret } from './secret.js';
+
+function isSecretField(schema: StandardSchemaV1<unknown, unknown>): boolean {
+  return (schema as Partial<SecretSchema<unknown>>).isSecret === true;
+}
 
 // Infer the output type from a schema map
 type SchemaMap = Record<string, StandardSchemaV1<unknown, unknown>>;
@@ -24,9 +29,15 @@ export async function validateEnv<S extends SchemaMap>(
       const result = await fieldSchema['~standard'].validate(rawValue);
 
       if (result.issues && result.issues.length > 0) {
-        fieldErrors[key] = result.issues.map((issue) =>
-          typeof issue.message === 'string' ? issue.message : String(issue.message),
-        );
+        // For secret fields, replace validator messages with a generic one to prevent
+        // user-defined validator messages from echoing back the raw secret value.
+        if (isSecretField(fieldSchema)) {
+          fieldErrors[key] = ['<secret> validation failed (value hidden)'];
+        } else {
+          fieldErrors[key] = result.issues.map((issue) =>
+            typeof issue.message === 'string' ? issue.message : String(issue.message),
+          );
+        }
       } else {
         // issues is either undefined (SuccessResult) or an empty array — both mean success
         config[key] = (result as StandardSchemaV1.SuccessResult<unknown>).value;
