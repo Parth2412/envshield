@@ -2,7 +2,7 @@
 
 > Type-safe configuration & secrets management for Node.js. The dotenv replacement that actually protects your secrets.
 
-[![npm version](https://img.shields.io/npm/v/envshield)](https://www.npmjs.com/package/envshield)
+[![npm version](https://img.shields.io/npm/v/@thekaloliya/envshield)](https://www.npmjs.com/package/@thekaloliya/envshield)
 [![Node.js >=20](https://img.shields.io/badge/node-%3E%3D20-brightgreen)](https://nodejs.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![npm audit: 0 vulnerabilities](https://img.shields.io/badge/npm%20audit-0%20vulnerabilities-brightgreen)](https://docs.npmjs.com/cli/v10/commands/npm-audit)
@@ -30,11 +30,11 @@ The real problems dotenv leaves unsolved:
 ## Quick Start
 
 ```bash
-npm install envshield zod
+npm install @thekaloliya/envshield zod
 ```
 
 ```typescript
-import { envshield, s } from 'envshield';
+import { envshield, s } from '@thekaloliya/envshield';
 import { z } from 'zod';
 
 const config = await envshield({
@@ -92,10 +92,10 @@ The value is stored in a native **private class field** (`#value`), inaccessible
 
 ```bash
 # With Zod (recommended)
-npm install envshield zod
+npm install @thekaloliya/envshield zod
 
 # With AWS Secrets Manager support
-npm install envshield zod @aws-sdk/client-secrets-manager
+npm install @thekaloliya/envshield zod @aws-sdk/client-secrets-manager
 
 # Zod is optional — any Standard Schema-compliant validator works
 ```
@@ -152,7 +152,7 @@ const config = await envshield({
 Implement the `EnvProvider` interface for any source:
 
 ```typescript
-import type { EnvProvider } from 'envshield';
+import type { EnvProvider } from '@thekaloliya/envshield';
 
 class VaultProvider implements EnvProvider {
   readonly name = 'vault';
@@ -174,7 +174,7 @@ const config = await envshield({
 ## AWS Secrets Manager
 
 ```typescript
-import { envshield, s } from 'envshield';
+import { envshield, s } from '@thekaloliya/envshield';
 import { AwsSecretsManagerProvider } from 'envshield/providers/aws'; // if needed directly
 import { z } from 'zod';
 
@@ -193,7 +193,7 @@ const config = await envshield({
 Or with explicit options via a custom provider instance:
 
 ```typescript
-import { AwsSecretsManagerProvider } from 'envshield';
+import { AwsSecretsManagerProvider } from '@thekaloliya/envshield';
 
 const config = await envshield({
   schema: { ... },
@@ -397,7 +397,7 @@ const apiKey = process.env.API_KEY!; // could be undefined at runtime
 ### After (envshield)
 
 ```typescript
-import { envshield, s } from 'envshield';
+import { envshield, s } from '@thekaloliya/envshield';
 import { z } from 'zod';
 
 const config = await envshield({
