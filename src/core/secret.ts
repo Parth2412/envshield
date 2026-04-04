@@ -19,6 +19,15 @@ export class Secret<T> {
     return REDACTED;
   }
 
+  /**
+   * Prevents secret values from leaking through JavaScript's type coercion.
+   * Without this override, `Number(secret)` or `+secret` could call `valueOf()`
+   * which falls back to the default object-to-primitive conversion.
+   */
+  [Symbol.toPrimitive](_hint: string): string {
+    return REDACTED;
+  }
+
   [Symbol.for('nodejs.util.inspect.custom')](): string {
     return `Secret(${REDACTED})`;
   }
