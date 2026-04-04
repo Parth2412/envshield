@@ -3,12 +3,12 @@
   "version": "0.1.0",
   "description": "Type-safe configuration & secrets management replacing dotenv. Security-first: redacts secrets from logs, deletes them from process.env after loading.",
   "keywords": ["env", "config", "secrets", "dotenv", "security", "type-safe", "zod"],
-  "author": "Zettacore",
+  "author": "Parth2412",
   "license": "MIT",
-  "homepage": "https://github.com/zettacore/envshield",
+  "homepage": "https://github.com/Parth2412/envshield",
   "repository": {
     "type": "git",
-    "url": "https://github.com/zettacore/envshield.git"
+    "url": "git+https://github.com/Parth2412/envshield.git"
   },
   "engines": {
     "node": ">=20.0.0"
@@ -30,7 +30,7 @@
     }
   },
   "bin": {
-    "envshield": "./dist/cli/index.js"
+    "envshield": "dist/cli/index.js"
   },
   "files": ["dist", "README.md", "SECURITY.md", "CHANGELOG.md"],
   "sideEffects": false,
